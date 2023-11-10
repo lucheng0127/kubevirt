@@ -13,7 +13,7 @@ jobs:
 
     env:
       REGISTRY_HOST: quay.io
-      DOCKER_PREFIX: lucheng0127
+      DOCKER_PREFIX: shawnlu0127
       BUILD_ARCH: arm64
     steps:
     - uses: actions/checkout@v3
