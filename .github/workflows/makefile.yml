@@ -33,3 +33,19 @@ jobs:
 
     - name: Push
       run: make push
+
+    - name: Manifest
+      run: make manifests
+
+    - name: Gzip yaml
+      run: tar zcvf manifests.tgz manifests
+
+    - name: Upload to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GIT_TOKEN }}
+        file: manifests.tgz
+        asset_name: manifest
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "kubevirt yaml manifests"
