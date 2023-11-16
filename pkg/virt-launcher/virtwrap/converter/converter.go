@@ -1414,6 +1414,10 @@ func Convert_v1_VirtualMachineInstance_To_api_Domain(vmi *v1.VirtualMachineInsta
 				kernelPath := containerdisk.GetKernelBootArtifactPathFromLauncherView(kb.Container.KernelPath)
 				log.Log.Object(vmi).Infof("setting kernel path for kernel boot: " + kernelPath)
 				domain.Spec.OS.Kernel = kernelPath
+
+				// Disable bootloader when launch vm from kernel
+				domain.Spec.OS.NVRam = nil
+				domain.Spec.OS.BootLoader = nil
 			}
 
 			if kb.Container.InitrdPath != "" {
@@ -1780,6 +1784,10 @@ func Convert_v1_VirtualMachineInstance_To_api_Domain(vmi *v1.VirtualMachineInsta
 		if err != nil {
 			return err
 		}
+	}
+
+	if domain.Spec.OS.Kernel != "" {
+		domain.Spec.Features.ACPI = nil
 	}
 
 	if machine := vmi.Spec.Domain.Machine; machine != nil {
